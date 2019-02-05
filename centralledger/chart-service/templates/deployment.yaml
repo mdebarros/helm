@@ -53,50 +53,6 @@ spec:
         {{- end }}
       {{- end }}
       containers:
-        - name: {{ template "centralledger-service.name" . }}
-          image: "{{ .Values.containers.api.image.repository }}:{{ .Values.containers.api.image.tag }}"
-          imagePullPolicy: {{ .Values.containers.api.image.pullPolicy }}
-          command: {{ .Values.containers.api.image.command }}
-          ports:
-          {{- range $port := .Values.containers.api.service.ports }}
-            - name: {{ $port.name }}
-              containerPort: {{ $port.internalPort }}
-          {{- end }}
-          {{- if .Values.containers.api.readinessProbe.enabled }}
-          readinessProbe:
-            httpGet:
-              path: {{ .Values.containers.api.readinessProbe.httpGet.path }}
-              port: {{ .Values.containers.api.service.ports.api.internalPort }}
-            initialDelaySeconds: {{ .Values.containers.api.readinessProbe.initialDelaySeconds }}
-            periodSeconds: {{ .Values.containers.api.readinessProbe.periodSeconds }}
-          {{- end }}
-          {{- if .Values.containers.api.livenessProbe.enabled }}
-          livenessProbe:
-            httpGet:
-              path: {{ .Values.containers.api.livenessProbe.httpGet.path }}
-              port: {{ .Values.containers.api.service.ports.api.internalPort }}
-            initialDelaySeconds: {{ .Values.containers.api.livenessProbe.initialDelaySeconds }}
-            periodSeconds: {{ .Values.containers.api.livenessProbe.periodSeconds }}
-          {{- end }}
-          env:
-            - name: CLEDG_PORT
-              valueFrom:
-                configMapKeyRef:
-                  name: {{ template "centralledger-service.fullname" . }}
-                  key: server.port
-            - name: CLEDG_HOSTNAME
-              valueFrom:
-                configMapKeyRef:
-                  name: {{ template "centralledger-service.fullname" . }}
-                  key: server.host
-            - name: CLEDG_DATABASE_URI
-              valueFrom:
-                secretKeyRef:
-                  name: {{ template "centralledger-service.fullname" . }}
-                  key: db.uri
-          volumeMounts:
-          - name: {{ template "centralledger-service.fullname" . }}-config-volume
-            mountPath: /opt/central-ledger/config
         - name: {{ template "centralledger-service.name" . }}-admin
           image: "{{ .Values.containers.admin.image.repository }}:{{ .Values.containers.admin.image.tag }}"
           imagePullPolicy: {{ .Values.containers.admin.image.pullPolicy }}

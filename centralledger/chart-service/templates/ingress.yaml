@@ -15,13 +15,6 @@ metadata:
     {{- end }}
 spec:
   rules:
-    - host: {{ .Values.ingress.hosts.api }}
-      http:
-        paths:
-          - path: {{ .Values.ingress.externalPath.api }}
-            backend:
-              serviceName: {{ $serviceName }}
-              servicePort: {{ .Values.containers.api.service.ports.api.externalPort }}
     - host: {{ .Values.ingress.hosts.admin }}
       http:
         paths:
