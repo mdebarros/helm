@@ -1,7 +1,7 @@
 {{- $kafkaHost := ( .Values.config.kafka_host | replace "$release_name" .Release.Name ) -}}
 {
-    "PORT": {{ .Values.containers.api.service.ports.api.internalPort }},
-    "HOSTNAME": "{{ .Values.ingress.hosts.api }}",
+    "PORT": {{ .Values.containers.service.ports.internalPort }},
+    "HOSTNAME": "{{ .Values.ingress.host }}",
     "RUN_MIGRATIONS": false,
     "ENABLE_TOKEN_AUTH": false,
     "ENABLE_BASIC_AUTH": false,

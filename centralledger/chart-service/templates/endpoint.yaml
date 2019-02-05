@@ -15,9 +15,6 @@ subsets:
         ip: {{ .Values.service.external.ip }}
     ports:
       -
-        port: {{ .Values.service.external.ports.api.externalPort }}
-        name: {{ .Values.service.external.ports.api.name }}
-      -
-        port: {{ .Values.service.external.ports.admin.externalPort }}
-        name: {{ .Values.service.external.ports.admin.name }}
+        port: {{ .Values.service.external.ports.externalPort }}
+        name: {{ .Values.service.external.ports.name }}
 {{- end -}}

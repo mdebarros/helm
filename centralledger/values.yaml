@@ -27,30 +27,28 @@ centralledger-service:
   enabled: true
   replicaCount: 1
   containers:
-    admin:
-      image:
-        repository: mojaloop/central-ledger
-        tag: v4.4.1
-        pullPolicy: Always
-        command: '["node", "src/admin/index.js"]'
-      service:
-        ports:
-          api:
-            name: http-api-admin
-            externalPort: 3001
-            internalPort: 3001
-      readinessProbe:
-        enabled: true
-        httpGet:
-          path: /health
-        initialDelaySeconds: 120
-        periodSeconds: 15
-      livenessProbe:
-        enabled: true
-        httpGet:
-          path: /health
-        initialDelaySeconds: 90
-        periodSeconds: 15
+    image:
+      repository: mojaloop/central-ledger
+      tag: v5.1.0
+      pullPolicy: Always
+      command: '["node", "src/admin/index.js"]'
+    service:
+      ports:
+        name: http-api-admin
+        externalPort: 3001
+        internalPort: 3001
+    readinessProbe:
+      enabled: true
+      httpGet:
+        path: /health
+      initialDelaySeconds: 120
+      periodSeconds: 15
+    livenessProbe:
+      enabled: true
+      httpGet:
+        path: /health
+      initialDelaySeconds: 90
+      periodSeconds: 15
 
   ## metric configuration for prometheus instrumentation
   metrics:
@@ -112,19 +110,15 @@ centralledger-service:
       # 10.0.2.2 is the magic IP for the host on virtualbox's network
       ip: 10.0.2.2
       ports:
-        admin:
-          name: http-api-admin
-          externalPort: 3001
+        name: http-api
+        externalPort: 3001
 
   ingress:
     enabled: true
     type: http
-    externalPath:
-      admin: /
+    externalPath: /
     # Used to create an Ingress record.
-    hosts:
-      api: central-ledger.local
-      admin: central-ledger.local
+    host: central-ledger.local
     annotations:
       nginx.ingress.kubernetes.io/rewrite-target: '/'
       # kubernetes.io/ingress.class: nginx
@@ -155,30 +149,28 @@ centralledger-handler-transfer-prepare:
   enabled: true
   replicaCount: 1
   containers:
-    api:
-      image:
-        repository: mojaloop/central-ledger
-        tag: v4.4.1
-        pullPolicy: Always
-        command: '["node", "src/handlers/index.js", "handler", "--prepare"]'
-      service:
-        ports:
-          api:
-            name: http-api
-            externalPort: 3000
-            internalPort: 3000
-      readinessProbe:
-        enabled: true
-        httpGet:
-          path: /health
-        initialDelaySeconds: 120
-        periodSeconds: 15
-      livenessProbe:
-        enabled: true
-        httpGet:
-          path: /health
-        initialDelaySeconds: 90
-        periodSeconds: 15
+    image:
+      repository: mojaloop/central-ledger
+      tag: v5.1.0
+      pullPolicy: Always
+      command: '["node", "src/handlers/index.js", "handler", "--prepare"]'
+    service:
+      ports:
+        name: http-api
+        externalPort: 3001
+        internalPort: 3001
+    readinessProbe:
+      enabled: true
+      httpGet:
+        path: /health
+      initialDelaySeconds: 120
+      periodSeconds: 15
+    livenessProbe:
+      enabled: true
+      httpGet:
+        path: /health
+      initialDelaySeconds: 90
+      periodSeconds: 15
 
   ## metric configuration for prometheus instrumentation
   metrics:
@@ -248,22 +240,15 @@ centralledger-handler-transfer-prepare:
       # 10.0.2.2 is the magic IP for the host on virtualbox's network
       ip: 10.0.2.2
       ports:
-        api:
-          name: http-api
-          externalPort: 3000
-        admin:
-          name: http-api-admin
-          externalPort: 3001
+        name: http-api
+        externalPort: 3001
 
   ingress:
     enabled: true
     type: http
-    externalPath:
-      api: /
-      admin: /admin
+    externalPath: /
     # Used to create an Ingress record.
-    hosts:
-      api: central-ledger-transfer-prepare.local
+    host: central-ledger-transfer-prepare.local
     annotations:
       nginx.ingress.kubernetes.io/rewrite-target: '/'
       # kubernetes.io/ingress.class: nginx
@@ -294,30 +279,28 @@ centralledger-handler-transfer-position:
   enabled: true
   replicaCount: 1
   containers:
-    api:
-      image:
-        repository: mojaloop/central-ledger
-        tag: v4.4.1
-        pullPolicy: Always
-        command: '["node", "src/handlers/index.js", "handler", "--position"]'
-      service:
-        ports:
-          api:
-            name: http-api
-            externalPort: 3000
-            internalPort: 3000
-      readinessProbe:
-        enabled: true
-        httpGet:
-          path: /health
-        initialDelaySeconds: 120
-        periodSeconds: 15
-      livenessProbe:
-        enabled: true
-        httpGet:
-          path: /health
-        initialDelaySeconds: 90
-        periodSeconds: 15
+    image:
+      repository: mojaloop/central-ledger
+      tag: v5.1.0
+      pullPolicy: Always
+      command: '["node", "src/handlers/index.js", "handler", "--position"]'
+    service:
+      ports:
+        name: http-api
+        externalPort: 3001
+        internalPort: 3001
+    readinessProbe:
+      enabled: true
+      httpGet:
+        path: /health
+      initialDelaySeconds: 120
+      periodSeconds: 15
+    livenessProbe:
+      enabled: true
+      httpGet:
+        path: /health
+      initialDelaySeconds: 90
+      periodSeconds: 15
 
   ## metric configuration for prometheus instrumentation
   metrics:
@@ -387,22 +370,15 @@ centralledger-handler-transfer-position:
       # 10.0.2.2 is the magic IP for the host on virtualbox's network
       ip: 10.0.2.2
       ports:
-        api:
-          name: http-api
-          externalPort: 3000
-        admin:
-          name: http-api-admin
-          externalPort: 3001
+        name: http-api
+        externalPort: 3001
 
   ingress:
     enabled: true
     type: http
-    externalPath:
-      api: /
-      admin: /admin
+    externalPath: /
     # Used to create an Ingress record.
-    hosts:
-      api: central-ledger-transfer-position.local
+    host: central-ledger-transfer-position.local
     annotations:
       nginx.ingress.kubernetes.io/rewrite-target: '/'
       # kubernetes.io/ingress.class: nginx
@@ -432,30 +408,28 @@ centralledger-handler-transfer-get:
   enabled: true
   replicaCount: 1
   containers:
-    api:
-      image:
-        repository: mojaloop/central-ledger
-        tag: v4.4.1
-        pullPolicy: Always
-        command: '["node", "src/handlers/index.js", "handler", "--get"]'
-      service:
-        ports:
-          api:
-            name: http-api
-            externalPort: 3000
-            internalPort: 3000
-      readinessProbe:
-        enabled: true
-        httpGet:
-          path: /health
-        initialDelaySeconds: 120
-        periodSeconds: 15
-      livenessProbe:
-        enabled: true
-        httpGet:
-          path: /health
-        initialDelaySeconds: 90
-        periodSeconds: 15
+    image:
+      repository: mojaloop/central-ledger
+      tag: v5.1.0
+      pullPolicy: Always
+      command: '["node", "src/handlers/index.js", "handler", "--get"]'
+    service:
+      ports:
+        name: http-api
+        externalPort: 3001
+        internalPort: 3001
+    readinessProbe:
+      enabled: true
+      httpGet:
+        path: /health
+      initialDelaySeconds: 120
+      periodSeconds: 15
+    livenessProbe:
+      enabled: true
+      httpGet:
+        path: /health
+      initialDelaySeconds: 90
+      periodSeconds: 15
 
   ## metric configuration for prometheus instrumentation
   metrics:
@@ -525,22 +499,15 @@ centralledger-handler-transfer-get:
       # 10.0.2.2 is the magic IP for the host on virtualbox's network
       ip: 10.0.2.2
       ports:
-        api:
-          name: http-api
-          externalPort: 3000
-        admin:
-          name: http-api-admin
-          externalPort: 3001
+        name: http-api
+        externalPort: 3001
 
   ingress:
     enabled: true
     type: http
-    externalPath:
-      api: /
-      admin: /admin
+    externalPath: /
     # Used to create an Ingress record.
-    hosts:
-      api: central-ledger-transfer-get.local
+    host: central-ledger-transfer-get.local
     annotations:
       nginx.ingress.kubernetes.io/rewrite-target: '/'
       # kubernetes.io/ingress.class: nginx
@@ -571,30 +538,28 @@ centralledger-handler-transfer-fulfil:
   enabled: true
   replicaCount: 1
   containers:
-    api:
-      image:
-        repository: mojaloop/central-ledger
-        tag: v4.4.1
-        pullPolicy: Always
-        command: '["node", "src/handlers/index.js", "handler", "--fulfil"]'
-      service:
-        ports:
-          api:
-            name: http-api
-            externalPort: 3000
-            internalPort: 3000
-      readinessProbe:
-        enabled: true
-        httpGet:
-          path: /health
-        initialDelaySeconds: 120
-        periodSeconds: 15
-      livenessProbe:
-        enabled: true
-        httpGet:
-          path: /health
-        initialDelaySeconds: 90
-        periodSeconds: 15
+    image:
+      repository: mojaloop/central-ledger
+      tag: v5.1.0
+      pullPolicy: Always
+      command: '["node", "src/handlers/index.js", "handler", "--fulfil"]'
+    service:
+      ports:
+        name: http-api
+        externalPort: 3001
+        internalPort: 3001
+    readinessProbe:
+      enabled: true
+      httpGet:
+        path: /health
+      initialDelaySeconds: 120
+      periodSeconds: 15
+    livenessProbe:
+      enabled: true
+      httpGet:
+        path: /health
+      initialDelaySeconds: 90
+      periodSeconds: 15
 
   ## metric configuration for prometheus instrumentation
   metrics:
@@ -664,22 +629,15 @@ centralledger-handler-transfer-fulfil:
       # 10.0.2.2 is the magic IP for the host on virtualbox's network
       ip: 10.0.2.2
       ports:
-        api:
-          name: http-api
-          externalPort: 3000
-        admin:
-          name: http-api-admin
-          externalPort: 3001
+        name: http-api
+        externalPort: 3001
 
   ingress:
     enabled: true
     type: http
-    externalPath:
-      api: /
-      admin: /admin
+    externalPath: /
     # Used to create an Ingress record.
-    hosts:
-      api: central-ledger-transfer-position.local
+    host: central-ledger-transfer-position.local
     annotations:
       nginx.ingress.kubernetes.io/rewrite-target: '/'
       # kubernetes.io/ingress.class: nginx
@@ -709,30 +667,28 @@ centralledger-handler-timeout:
   enabled: true
   replicaCount: 1
   containers:
-    api:
-      image:
-        repository: mojaloop/central-ledger
-        tag: v4.4.1
-        pullPolicy: Always
-        command: '["node", "src/handlers/index.js", "handler", "--timeout"]'
-      service:
-        ports:
-          api:
-            name: http-api
-            externalPort: 3000
-            internalPort: 3000
-      readinessProbe:
-        enabled: true
-        httpGet:
-          path: /health
-        initialDelaySeconds: 120
-        periodSeconds: 15
-      livenessProbe:
-        enabled: true
-        httpGet:
-          path: /health
-        initialDelaySeconds: 90
-        periodSeconds: 15
+    image:
+      repository: mojaloop/central-ledger
+      tag: v5.1.0
+      pullPolicy: Always
+      command: '["node", "src/handlers/index.js", "handler", "--timeout"]'
+    service:
+      ports:
+        name: http-api
+        externalPort: 3001
+        internalPort: 3001
+    readinessProbe:
+      enabled: true
+      httpGet:
+        path: /health
+      initialDelaySeconds: 120
+      periodSeconds: 15
+    livenessProbe:
+      enabled: true
+      httpGet:
+        path: /health
+      initialDelaySeconds: 90
+      periodSeconds: 15
 
   ## metric configuration for prometheus instrumentation
   metrics:
@@ -802,22 +758,15 @@ centralledger-handler-timeout:
       # 10.0.2.2 is the magic IP for the host on virtualbox's network
       ip: 10.0.2.2
       ports:
-        api:
-          name: http-api
-          externalPort: 3000
-        admin:
-          name: http-api-admin
-          externalPort: 3001
+        name: http-api
+        externalPort: 3001
 
   ingress:
     enabled: true
     type: http
-    externalPath:
-      api: /
-      admin: /admin
+    externalPath: /
     # Used to create an Ingress record.
-    hosts:
-      api: central-ledger-timeout.local
+    host: central-ledger-timeout.local
     annotations:
       nginx.ingress.kubernetes.io/rewrite-target: '/'
       # kubernetes.io/ingress.class: nginx
@@ -847,30 +796,28 @@ centralledger-handler-admin-transfer:
       enabled: true
       replicaCount: 1
       containers:
-        api:
-          image:
-            repository: mojaloop/central-ledger
-            tag: v4.4.1
-            pullPolicy: Always
-            command: '["node", "src/handlers/index.js", "handler", "--admin"]'
-          service:
-            ports:
-              api:
-                name: http-api
-                externalPort: 3000
-                internalPort: 3000
-          readinessProbe:
-            enabled: true
-            httpGet:
-              path: /health
-            initialDelaySeconds: 120
-            periodSeconds: 15
-          livenessProbe:
-            enabled: true
-            httpGet:
-              path: /health
-            initialDelaySeconds: 90
-            periodSeconds: 15
+        image:
+          repository: mojaloop/central-ledger
+          tag: v5.1.0
+          pullPolicy: Always
+          command: '["node", "src/handlers/index.js", "handler", "--admin"]'
+        service:
+          ports:
+            name: http-api
+            externalPort: 3001
+            internalPort: 3001
+        readinessProbe:
+          enabled: true
+          httpGet:
+            path: /health
+          initialDelaySeconds: 120
+          periodSeconds: 15
+        livenessProbe:
+          enabled: true
+          httpGet:
+            path: /health
+          initialDelaySeconds: 90
+          periodSeconds: 15
 
       ## metric configuration for prometheus instrumentation
       metrics:
@@ -940,22 +887,15 @@ centralledger-handler-admin-transfer:
           # 10.0.2.2 is the magic IP for the host on virtualbox's network
           ip: 10.0.2.2
           ports:
-            api:
-              name: http-api
-              externalPort: 3000
-            admin:
-              name: http-api-admin
-              externalPort: 3001
+            name: http-api
+            externalPort: 3001
 
       ingress:
         enabled: true
         type: http
-        externalPath:
-          api: /
-          admin: /admin
+        externalPath: /
         # Used to create an Ingress record.
-        hosts:
-          api: central-ledger-admin-transfer.local
+        host: central-ledger-admin-transfer.local
         annotations:
           nginx.ingress.kubernetes.io/rewrite-target: '/'
           # kubernetes.io/ingress.class: nginx
