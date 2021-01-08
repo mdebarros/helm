@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ .Values.config.is_populate.name | quote }}
+  name: {{ template "finance-portal.fullname" . }}-{{ .Values.config.is_populate.name }}
   labels:
     app.kubernetes.io/name: {{ include "finance-portal.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
